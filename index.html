@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Analyse de fichiers - Filtrage par colonne</title>
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="app.js" defer></script>
+</head>
+<body>
+  <header class="app-header">
+    <h1>Comparateur de fichiers</h1>
+    <p class="tagline">Importez vos jeux de données, recherchez et exportez les résultats filtrés.</p>
+  </header>
+  <main>
+    <section class="panel" aria-labelledby="upload-heading">
+      <h2 id="upload-heading">Importer les fichiers</h2>
+      <form class="upload-form" aria-describedby="upload-help">
+        <div class="field">
+          <label for="referenceFile">Fichier de référence</label>
+          <input type="file" id="referenceFile" name="referenceFile" accept=".csv,.tsv,.txt,.json" />
+        </div>
+        <div class="field">
+          <label for="comparisonFile">Fichier à comparer</label>
+          <input type="file" id="comparisonFile" name="comparisonFile" accept=".csv,.tsv,.txt,.json" />
+        </div>
+        <p id="upload-help" class="helper-text">Les colonnes sont détectées automatiquement à partir de la première ligne.</p>
+      </form>
+    </section>
+
+    <section class="panel" aria-labelledby="search-heading">
+      <h2 id="search-heading">Recherche</h2>
+      <div class="search-controls">
+        <div class="field search-query">
+          <label for="searchInput">Mot-clé</label>
+          <input type="search" id="searchInput" name="searchInput" placeholder="Rechercher..." autocomplete="off" />
+        </div>
+        <div class="field checkbox-field">
+          <input type="checkbox" id="caseSensitive" name="caseSensitive" />
+          <label for="caseSensitive">Sensible à la casse</label>
+        </div>
+        <div class="field checkbox-field">
+          <input type="checkbox" id="exactMatch" name="exactMatch" />
+          <label for="exactMatch">Correspondance exacte</label>
+        </div>
+        <fieldset class="column-filter" role="group" aria-label="Filtrage par colonne">
+          <legend>Rechercher dans</legend>
+          <div class="column-filter__summary" id="columnFilterSummary" aria-live="polite">Colonnes : toutes</div>
+          <button type="button" class="column-filter__toggle" id="columnFilterToggle" aria-haspopup="true" aria-expanded="false" aria-controls="columnFilterDropdown">
+            Sélectionner les colonnes
+          </button>
+          <div class="column-filter__dropdown" id="columnFilterDropdown" hidden>
+            <div class="column-filter__options" role="listbox" aria-multiselectable="true">
+              <div class="option">
+                <input type="checkbox" id="column-all" data-column-key="__all__" checked />
+                <label for="column-all">Toutes les colonnes</label>
+              </div>
+              <div id="columnOptions"></div>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+      <div id="columnFilterLive" class="sr-only" aria-live="polite"></div>
+    </section>
+
+    <section class="panel" aria-labelledby="actions-heading">
+      <h2 id="actions-heading">Actions</h2>
+      <div class="actions">
+        <button type="button" id="copyButton" class="secondary">Copier</button>
+        <button type="button" id="exportCsvButton">Exporter CSV</button>
+        <button type="button" id="exportXlsxButton">Exporter XLSX</button>
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="results-heading">
+      <h2 id="results-heading">Résultats</h2>
+      <div id="statusMessage" class="sr-only" aria-live="polite"></div>
+      <div class="table-wrapper" tabindex="0">
+        <table id="resultsTable">
+          <thead>
+            <tr id="tableHeader"></tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+      <nav class="pagination" aria-label="Pagination des résultats">
+        <button type="button" id="prevPage" aria-label="Page précédente" disabled>&laquo;</button>
+        <span id="paginationInfo" aria-live="polite">0 / 0</span>
+        <button type="button" id="nextPage" aria-label="Page suivante" disabled>&raquo;</button>
+      </nav>
+    </section>
+  </main>
+</body>
+</html>
